@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Chart Generator - Ayurvedic Diet Software</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #fef3c7 100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-2xl font-bold text-green-600">🍃 Ayurvedic Diet</a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-green-600">Home</a>
+                    <a href="patient.html" class="text-gray-600 hover:text-green-600">Patient</a>
+                    <a href="foods.html" class="text-gray-600 hover:text-green-600">Foods</a>
+                    <a href="diet.html" class="text-green-600 font-medium">Diet Chart</a>
+                    <a href="recipes.html" class="text-gray-600 hover:text-green-600">Recipes</a>
+                    <a href="reports.html" class="text-gray-600 hover:text-green-600">Reports</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">📋 Diet Chart Generator</h1>
+            
+            <!-- Patient Selection -->
+            <div class="mb-8">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Select Patient:</label>
+                <select id="patientSelect" class="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <option value="">Choose a patient...</option>
+                </select>
+            </div>
+
+            <!-- Patient Information Display -->
+            <div id="patientInfo" class="mb-8 bg-blue-50 rounded-lg p-6 hidden">
+                <h3 class="text-lg font-semibold text-blue-800 mb-4">👤 Patient Information</h3>
+                <div id="patientDetails" class="grid md:grid-cols-2 gap-4">
+                    <!-- Patient details will be populated here -->
+                </div>
+            </div>
+
+            <!-- Selected Foods Display -->
+            <div id="selectedFoodsDisplay" class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Selected Foods</h2>
+                <div id="foodsList" class="space-y-2">
+                    <!-- Foods will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Nutritional Summary -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-green-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-green-800 mb-4">📊 Nutritional Summary</h3>
+                    <div id="nutritionSummary" class="space-y-2">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="bg-orange-50 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-orange-800 mb-4">🌿 Ayurvedic Properties</h3>
+                    <div id="ayurvedicSummary" class="space-y-2">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Charts Section -->
+            <div class="grid lg:grid-cols-2 gap-6 mb-8">
+                <!-- Nutritional Chart -->
+                <div class="bg-white border-2 border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📈 Nutritional Distribution Chart</h3>
+                    <div id="nutritionalChart" class="space-y-4">
+                        <!-- Chart will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Ayurvedic Properties Chart -->
+                <div class="bg-white border-2 border-gray-200 rounded-lg p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">🌿 Ayurvedic Properties Chart</h3>
+                    <div id="ayurvedicChart" class="space-y-4">
+                        <!-- Chart will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rasa Distribution Chart -->
+            <div class="bg-white border-2 border-gray-200 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">🍯 Rasa (Taste) Distribution</h3>
+                <div id="rasaChart" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <!-- Rasa chart will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Diet Summary -->
+            <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">📊 Daily Diet Summary</h2>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-600" id="totalDailyCalories">1,320</div>
+                        <div class="text-sm text-gray-600">Total Daily Calories</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600" id="mealCount">5</div>
+                        <div class="text-sm text-gray-600">Meals per Day</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-orange-600" id="ayurvedicBalance">Balanced</div>
+                        <div class="text-sm text-gray-600">Ayurvedic Balance</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Diet Chart -->
+            <div class="bg-white border-2 border-gray-200 rounded-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">📅 Daily Diet Chart</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border border-gray-300 px-4 py-2 text-left">Time</th>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Meal</th>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Food Items</th>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Calories</th>
+                                <th class="border border-gray-300 px-4 py-2 text-left">Ayurvedic Properties</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dietChartTable">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button id="generateChart" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300">
+                    <i class="fas fa-chart-bar mr-2"></i>Generate Diet Chart
+                </button>
+                <button id="downloadPDF" class="bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition duration-300">
+                    <i class="fas fa-download mr-2"></i>Download PDF
+                </button>
+                <button id="addMoreFoods" class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">
+                    <i class="fas fa-plus mr-2"></i>Add More Foods
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedFoods = [];
+        let patients = [];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPatients();
+            loadSelectedFoods();
+            setupEventListeners();
+            showDefaultCharts();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('patientSelect').addEventListener('change', function() {
+                if (this.value) {
+                    showPatientInfo(this.value);
+                    generateDietChart();
+                } else {
+                    hidePatientInfo();
+                }
+            });
+            
+            document.getElementById('generateChart').addEventListener('click', generateDietChart);
+            document.getElementById('downloadPDF').addEventListener('click', downloadPDF);
+            document.getElementById('addMoreFoods').addEventListener('click', function() {
+                window.location.href = 'foods.html';
+            });
+        }
+
+        function loadPatients() {
+            patients = JSON.parse(localStorage.getItem('patients') || '[]');
+            const select = document.getElementById('patientSelect');
+            
+            patients.forEach(patient => {
+                const option = document.createElement('option');
+                option.value = patient.id;
+                option.textContent = `${patient.name} (${patient.age} years, ${patient.gender})`;
+                select.appendChild(option);
+            });
+        }
+
+        function loadSelectedFoods() {
+            selectedFoods = JSON.parse(localStorage.getItem('selectedFoods') || '[]');
+            displaySelectedFoods();
+        }
+
+        function displaySelectedFoods() {
+            const foodsList = document.getElementById('foodsList');
+            
+            if (selectedFoods.length === 0) {
+                foodsList.innerHTML = '<p class="text-gray-500 italic">No foods selected. <a href="foods.html" class="text-green-600 hover:underline">Go to Food Database</a></p>';
+                return;
+            }
+
+            foodsList.innerHTML = selectedFoods.map(food => `
+                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
+                    <div>
+                        <span class="font-medium">${food.name}</span>
+                        <span class="text-sm text-gray-500 ml-2">${food.description}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-500">${food.calories} kcal</span>
+                        <button onclick="removeFood(${food.id})" class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removeFood(foodId) {
+            selectedFoods = selectedFoods.filter(food => food.id !== foodId);
+            localStorage.setItem('selectedFoods', JSON.stringify(selectedFoods));
+            displaySelectedFoods();
+            if (selectedFoods.length > 0) {
+                generateDietChart();
+            }
+        }
+
+        function generateDietChart() {
+            if (selectedFoods.length === 0) {
+                alert('Please select foods first from the Food Database.');
+                return;
+            }
+
+            const patientId = document.getElementById('patientSelect').value;
+            if (!patientId) {
+                alert('Please select a patient first.');
+                return;
+            }
+
+            const patient = patients.find(p => p.id === patientId);
+            if (!patient) {
+                alert('Patient not found.');
+                return;
+            }
+
+            // Calculate nutritional summary
+            calculateNutritionSummary();
+            
+            // Calculate Ayurvedic properties
+            calculateAyurvedicSummary();
+            
+            // Generate visual charts
+            generateNutritionalChart();
+            generateAyurvedicChart();
+            generateRasaChart();
+            
+            // Generate diet chart
+            generateDietTable(patient);
+        }
+
+        function calculateNutritionSummary() {
+            const totalCalories = selectedFoods.reduce((sum, food) => sum + food.calories, 0);
+            const avgCalories = Math.round(totalCalories / selectedFoods.length);
+            
+            document.getElementById('nutritionSummary').innerHTML = `
+                <div class="flex justify-between">
+                    <span>Total Calories:</span>
+                    <span class="font-semibold">${totalCalories} kcal</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Average per Food:</span>
+                    <span class="font-semibold">${avgCalories} kcal</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Number of Foods:</span>
+                    <span class="font-semibold">${selectedFoods.length}</span>
+                </div>
+            `;
+        }
+
+        function calculateAyurvedicSummary() {
+            const properties = {
+                hot: selectedFoods.filter(f => f.properties.includes('hot')).length,
+                cold: selectedFoods.filter(f => f.properties.includes('cold')).length,
+                light: selectedFoods.filter(f => f.properties.includes('light')).length,
+                heavy: selectedFoods.filter(f => f.properties.includes('heavy')).length
+            };
+
+            const rasaCount = {};
+            selectedFoods.forEach(food => {
+                rasaCount[food.rasa] = (rasaCount[food.rasa] || 0) + 1;
+            });
+
+            document.getElementById('ayurvedicSummary').innerHTML = `
+                <div class="space-y-1">
+                    <div class="flex justify-between">
+                        <span>🔥 Hot Foods:</span>
+                        <span class="font-semibold">${properties.hot}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>❄️ Cold Foods:</span>
+                        <span class="font-semibold">${properties.cold}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>🍃 Light Foods:</span>
+                        <span class="font-semibold">${properties.light}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>🍲 Heavy Foods:</span>
+                        <span class="font-semibold">${properties.heavy}</span>
+                    </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-orange-200">
+                    <div class="text-sm font-medium text-orange-700 mb-1">Rasa Distribution:</div>
+                    ${Object.entries(rasaCount).map(([rasa, count]) => `
+                        <div class="flex justify-between text-sm">
+                            <span>${getRasaIcon(rasa)} ${rasa.charAt(0).toUpperCase() + rasa.slice(1)}:</span>
+                            <span>${count}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function getRasaIcon(rasa) {
+            const icons = {
+                sweet: '🍯',
+                sour: '🍋',
+                salty: '🧂',
+                bitter: '🌿',
+                pungent: '🌶️',
+                astringent: '🍃'
+            };
+            return icons[rasa] || '🍃';
+        }
+
+        function generateDietTable(patient) {
+            const tableBody = document.getElementById('dietChartTable');
+            const mealTimes = [
+                { time: '6:00 AM', meal: 'Morning Tea', foods: ['Ginger Tea', 'Biscuits'] },
+                { time: '8:00 AM', meal: 'Breakfast', foods: ['Basmati Rice', 'Moong Dal'] },
+                { time: '12:00 PM', meal: 'Lunch', foods: ['Rice', 'Dal', 'Vegetables'] },
+                { time: '4:00 PM', meal: 'Evening Snack', foods: ['Fruits', 'Nuts'] },
+                { time: '8:00 PM', meal: 'Dinner', foods: ['Light Khichdi', 'Curd'] }
+            ];
+
+            tableBody.innerHTML = mealTimes.map(meal => {
+                const mealFoods = selectedFoods.slice(0, Math.min(2, selectedFoods.length));
+                const totalCalories = mealFoods.reduce((sum, food) => sum + food.calories, 0);
+                const properties = mealFoods.map(food => food.properties.join(', ')).join('; ') || 'N/A';
+                
+                return `
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2 font-medium">${meal.time}</td>
+                        <td class="border border-gray-300 px-4 py-2">${meal.meal}</td>
+                        <td class="border border-gray-300 px-4 py-2">${mealFoods.map(f => f.name).join(', ') || 'No foods selected'}</td>
+                        <td class="border border-gray-300 px-4 py-2">${totalCalories} kcal</td>
+                        <td class="border border-gray-300 px-4 py-2">${properties}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function downloadPDF() {
+            if (selectedFoods.length === 0) {
+                alert('Please generate a diet chart first.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(20);
+            doc.text('Ayurvedic Diet Chart', 20, 20);
+            
+            // Add patient info
+            const patientId = document.getElementById('patientSelect').value;
+            const patient = patients.find(p => p.id === patientId);
+            if (patient) {
+                doc.setFontSize(12);
+                doc.text(`Patient: ${patient.name} (${patient.age} years, ${patient.gender})`, 20, 35);
+                doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 45);
+            }
+            
+            // Add nutritional summary
+            doc.setFontSize(14);
+            doc.text('Nutritional Summary', 20, 65);
+            doc.setFontSize(10);
+            const totalCalories = selectedFoods.reduce((sum, food) => sum + food.calories, 0);
+            doc.text(`Total Calories: ${totalCalories} kcal`, 20, 75);
+            doc.text(`Number of Foods: ${selectedFoods.length}`, 20, 85);
+            
+            // Add diet chart table
+            doc.setFontSize(14);
+            doc.text('Daily Diet Chart', 20, 105);
+            
+            let yPosition = 115;
+            const mealTimes = [
+                { time: '6:00 AM', meal: 'Morning Tea' },
+                { time: '8:00 AM', meal: 'Breakfast' },
+                { time: '12:00 PM', meal: 'Lunch' },
+                { time: '4:00 PM', meal: 'Evening Snack' },
+                { time: '8:00 PM', meal: 'Dinner' }
+            ];
+            
+            mealTimes.forEach(meal => {
+                doc.setFontSize(10);
+                doc.text(`${meal.time} - ${meal.meal}`, 20, yPosition);
+                yPosition += 10;
+            });
+            
+            // Save the PDF
+            doc.save('ayurvedic-diet-chart.pdf');
+        }
+
+        function showDefaultCharts() {
+            // Create dummy patient if none exists
+            createDummyPatient();
+            
+            // Show default charts with sample data
+            const defaultFoods = [
+                { name: "Basmati Rice", calories: 130, properties: ["cold", "heavy"], rasa: "sweet" },
+                { name: "Moong Dal", calories: 120, properties: ["cold", "light"], rasa: "sweet" },
+                { name: "Ginger", calories: 80, properties: ["hot", "light"], rasa: "pungent" },
+                { name: "Cow's Milk", calories: 150, properties: ["cold", "heavy"], rasa: "sweet" },
+                { name: "Ghee", calories: 900, properties: ["hot", "heavy"], rasa: "sweet" },
+                { name: "Apple", calories: 52, properties: ["cold", "light"], rasa: "sweet" }
+            ];
+            
+            selectedFoods = defaultFoods;
+            localStorage.setItem('selectedFoods', JSON.stringify(selectedFoods));
+            
+            generateNutritionalChart();
+            generateAyurvedicChart();
+            generateRasaChart();
+            generateDummyDietChart();
+        }
+
+        function createDummyPatient() {
+            const existingPatients = JSON.parse(localStorage.getItem('patients') || '[]');
+            
+            // Only create dummy patient if none exists
+            if (existingPatients.length === 0) {
+                const dummyPatient = {
+                    id: 'dummy-patient-001',
+                    name: 'Priya Sharma',
+                    age: '28',
+                    gender: 'female',
+                    weight: '55',
+                    dietType: 'vegetarian',
+                    mealFrequency: '3',
+                    bowelMovements: 'daily',
+                    waterIntake: '2-3',
+                    healthConditions: 'Mild digestive issues, stress-related eating',
+                    prakriti: 'pitta',
+                    vikriti: 'pitta',
+                    createdAt: new Date().toISOString()
+                };
+                
+                localStorage.setItem('patients', JSON.stringify([dummyPatient]));
+                loadPatients(); // Reload the patient dropdown
+            }
+        }
+
+        function generateDummyDietChart() {
+            const tableBody = document.getElementById('dietChartTable');
+            const mealTimes = [
+                { 
+                    time: '6:00 AM', 
+                    meal: 'Morning Tea', 
+                    foods: ['Ginger Tea', 'Biscuits'],
+                    calories: 120,
+                    properties: 'Hot, Light'
+                },
+                { 
+                    time: '8:00 AM', 
+                    meal: 'Breakfast', 
+                    foods: ['Basmati Rice', 'Moong Dal'],
+                    calories: 250,
+                    properties: 'Cold, Heavy'
+                },
+                { 
+                    time: '12:00 PM', 
+                    meal: 'Lunch', 
+                    foods: ['Rice', 'Dal', 'Vegetables', 'Curd'],
+                    calories: 450,
+                    properties: 'Cold, Heavy'
+                },
+                { 
+                    time: '4:00 PM', 
+                    meal: 'Evening Snack', 
+                    foods: ['Apple', 'Nuts'],
+                    calories: 180,
+                    properties: 'Cold, Light'
+                },
+                { 
+                    time: '8:00 PM', 
+                    meal: 'Dinner', 
+                    foods: ['Light Khichdi', 'Ghee'],
+                    calories: 320,
+                    properties: 'Hot, Heavy'
+                }
+            ];
+
+            tableBody.innerHTML = mealTimes.map(meal => `
+                <tr class="hover:bg-gray-50">
+                    <td class="border border-gray-300 px-4 py-2 font-medium">${meal.time}</td>
+                    <td class="border border-gray-300 px-4 py-2">${meal.meal}</td>
+                    <td class="border border-gray-300 px-4 py-2">${meal.foods.join(', ')}</td>
+                    <td class="border border-gray-300 px-4 py-2 font-semibold text-green-600">${meal.calories} kcal</td>
+                    <td class="border border-gray-300 px-4 py-2 text-sm">${meal.properties}</td>
+                </tr>
+            `).join('');
+
+            // Update patient selection to show dummy patient
+            const patientSelect = document.getElementById('patientSelect');
+            if (patientSelect.children.length > 1) {
+                patientSelect.value = 'dummy-patient-001';
+                showPatientInfo('dummy-patient-001');
+            }
+        }
+
+        function showPatientInfo(patientId) {
+            const patient = patients.find(p => p.id === patientId);
+            if (!patient) return;
+
+            const patientInfo = document.getElementById('patientInfo');
+            const patientDetails = document.getElementById('patientDetails');
+
+            patientDetails.innerHTML = `
+                <div>
+                    <h4 class="font-medium text-gray-700 mb-2">Basic Information</h4>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div><strong>Name:</strong> ${patient.name}</div>
+                        <div><strong>Age:</strong> ${patient.age} years</div>
+                        <div><strong>Gender:</strong> ${patient.gender}</div>
+                        <div><strong>Weight:</strong> ${patient.weight || 'Not specified'} kg</div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-700 mb-2">Health & Diet</h4>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div><strong>Diet Type:</strong> ${patient.dietType || 'Not specified'}</div>
+                        <div><strong>Meal Frequency:</strong> ${patient.mealFrequency || 'Not specified'} meals/day</div>
+                        <div><strong>Water Intake:</strong> ${patient.waterIntake || 'Not specified'}</div>
+                        <div><strong>Prakriti:</strong> ${patient.prakriti || 'Not assessed'}</div>
+                    </div>
+                </div>
+            `;
+
+            patientInfo.classList.remove('hidden');
+        }
+
+        function hidePatientInfo() {
+            document.getElementById('patientInfo').classList.add('hidden');
+        }
+
+        function generateNutritionalChart() {
+            const totalCalories = selectedFoods.length > 0 ? 
+                selectedFoods.reduce((sum, food) => sum + food.calories, 0) : 1200;
+            
+            // Create dummy nutritional data
+            const nutritionalData = [
+                { name: 'Carbohydrates', value: Math.round(totalCalories * 0.6), color: 'bg-blue-500', percentage: 60 },
+                { name: 'Proteins', value: Math.round(totalCalories * 0.25), color: 'bg-green-500', percentage: 25 },
+                { name: 'Fats', value: Math.round(totalCalories * 0.15), color: 'bg-yellow-500', percentage: 15 }
+            ];
+
+            document.getElementById('nutritionalChart').innerHTML = nutritionalData.map(item => `
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-gray-700">${item.name}</span>
+                        <span class="text-sm font-semibold">${item.value} kcal (${item.percentage}%)</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="${item.color} h-3 rounded-full transition-all duration-1000" style="width: ${item.percentage}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateAyurvedicChart() {
+            const properties = {
+                hot: selectedFoods.length > 0 ? selectedFoods.filter(f => f.properties.includes('hot')).length : 1,
+                cold: selectedFoods.length > 0 ? selectedFoods.filter(f => f.properties.includes('cold')).length : 2,
+                light: selectedFoods.length > 0 ? selectedFoods.filter(f => f.properties.includes('light')).length : 2,
+                heavy: selectedFoods.length > 0 ? selectedFoods.filter(f => f.properties.includes('heavy')).length : 1
+            };
+
+            const totalProperties = Object.values(properties).reduce((sum, val) => sum + val, 0);
+            
+            const propertyData = [
+                { name: '🔥 Hot', value: properties.hot, color: 'bg-red-500', icon: '🔥' },
+                { name: '❄️ Cold', value: properties.cold, color: 'bg-blue-500', icon: '❄️' },
+                { name: '🍃 Light', value: properties.light, color: 'bg-green-500', icon: '🍃' },
+                { name: '🍲 Heavy', value: properties.heavy, color: 'bg-orange-500', icon: '🍲' }
+            ];
+
+            document.getElementById('ayurvedicChart').innerHTML = propertyData.map(item => {
+                const percentage = totalProperties > 0 ? Math.round((item.value / totalProperties) * 100) : 0;
+                return `
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-700">${item.name}</span>
+                            <span class="text-sm font-semibold">${item.value} (${percentage}%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="${item.color} h-3 rounded-full transition-all duration-1000" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function generateRasaChart() {
+            const rasaCount = {};
+            if (selectedFoods.length > 0) {
+                selectedFoods.forEach(food => {
+                    rasaCount[food.rasa] = (rasaCount[food.rasa] || 0) + 1;
+                });
+            } else {
+                // Default dummy data
+                rasaCount.sweet = 2;
+                rasaCount.pungent = 1;
+                rasaCount.sour = 0;
+                rasaCount.salty = 0;
+                rasaCount.bitter = 0;
+                rasaCount.astringent = 0;
+            }
+
+            const rasaData = [
+                { name: 'Sweet', icon: '🍯', count: rasaCount.sweet || 0, color: 'bg-yellow-100 border-yellow-300' },
+                { name: 'Sour', icon: '🍋', count: rasaCount.sour || 0, color: 'bg-yellow-100 border-yellow-300' },
+                { name: 'Salty', icon: '🧂', count: rasaCount.salty || 0, color: 'bg-blue-100 border-blue-300' },
+                { name: 'Bitter', icon: '🌿', count: rasaCount.bitter || 0, color: 'bg-green-100 border-green-300' },
+                { name: 'Pungent', icon: '🌶️', count: rasaCount.pungent || 0, color: 'bg-red-100 border-red-300' },
+                { name: 'Astringent', icon: '🍃', count: rasaCount.astringent || 0, color: 'bg-gray-100 border-gray-300' }
+            ];
+
+            document.getElementById('rasaChart').innerHTML = rasaData.map(rasa => `
+                <div class="text-center p-4 rounded-lg border-2 ${rasa.color} hover:shadow-md transition duration-300">
+                    <div class="text-3xl mb-2">${rasa.icon}</div>
+                    <div class="text-sm font-medium text-gray-700 mb-1">${rasa.name}</div>
+                    <div class="text-2xl font-bold text-gray-900">${rasa.count}</div>
+                </div>
+            `).join('');
+        }
+
+        // Make functions globally available
+        window.removeFood = removeFood;
+    </script>
+</body>
+</html>

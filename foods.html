@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Database - Ayurvedic Diet Software</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #fef3c7 100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-2xl font-bold text-green-600">🍃 Ayurvedic Diet</a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-green-600">Home</a>
+                    <a href="patient.html" class="text-gray-600 hover:text-green-600">Patient</a>
+                    <a href="foods.html" class="text-green-600 font-medium">Foods</a>
+                    <a href="diet.html" class="text-gray-600 hover:text-green-600">Diet Chart</a>
+                    <a href="recipes.html" class="text-gray-600 hover:text-green-600">Recipes</a>
+                    <a href="reports.html" class="text-gray-600 hover:text-green-600">Reports</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">🍽️ Ayurvedic Food Database</h1>
+            
+            <!-- Search and Filter -->
+            <div class="mb-8">
+                <div class="flex flex-col md:flex-row gap-4 mb-6">
+                    <div class="flex-1">
+                        <input type="text" id="searchInput" placeholder="Search foods..." 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="propertyFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                            <option value="">All Properties</option>
+                            <option value="hot">🔥 Hot</option>
+                            <option value="cold">❄️ Cold</option>
+                            <option value="light">🍃 Light</option>
+                            <option value="heavy">🍲 Heavy</option>
+                        </select>
+                        <select id="rasaFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                            <option value="">All Rasa</option>
+                            <option value="sweet">🍯 Sweet</option>
+                            <option value="sour">🍋 Sour</option>
+                            <option value="salty">🧂 Salty</option>
+                            <option value="bitter">🌿 Bitter</option>
+                            <option value="pungent">🌶️ Pungent</option>
+                            <option value="astringent">🍃 Astringent</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Food Grid -->
+            <div id="foodGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Food items will be populated by JavaScript -->
+            </div>
+
+            <!-- Selected Foods Summary -->
+            <div id="selectedFoods" class="mt-8 bg-green-50 rounded-lg p-6 hidden">
+                <h3 class="text-lg font-semibold text-green-800 mb-4">Selected Foods for Diet Chart</h3>
+                <div id="selectedList" class="space-y-2"></div>
+                <div class="mt-4 flex gap-4">
+                    <button id="clearSelected" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+                        Clear All
+                    </button>
+                    <button id="goToDietChart" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                        Create Diet Chart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Food database with Ayurvedic properties
+        const foodDatabase = [
+            {
+                id: 1,
+                name: "Basmati Rice",
+                calories: 130,
+                properties: ["cold", "heavy"],
+                rasa: "sweet",
+                description: "Cooling, nourishing, easy to digest",
+                category: "grains"
+            },
+            {
+                id: 2,
+                name: "Moong Dal",
+                calories: 120,
+                properties: ["cold", "light"],
+                rasa: "sweet",
+                description: "Light, cooling, tridoshic",
+                category: "pulses"
+            },
+            {
+                id: 3,
+                name: "Cow's Milk",
+                calories: 150,
+                properties: ["cold", "heavy"],
+                rasa: "sweet",
+                description: "Cooling, nourishing, promotes Ojas",
+                category: "dairy"
+            },
+            {
+                id: 4,
+                name: "Ghee",
+                calories: 900,
+                properties: ["hot", "heavy"],
+                rasa: "sweet",
+                description: "Heating, nourishing, enhances digestion",
+                category: "dairy"
+            },
+            {
+                id: 5,
+                name: "Paneer",
+                calories: 200,
+                properties: ["cold", "heavy"],
+                rasa: "sweet",
+                description: "Cooling, heavy, building",
+                category: "dairy"
+            },
+            {
+                id: 6,
+                name: "Apple",
+                calories: 52,
+                properties: ["cold", "light"],
+                rasa: "sweet",
+                description: "Cooling, light, good for Pitta",
+                category: "fruits"
+            },
+            {
+                id: 7,
+                name: "Mango",
+                calories: 60,
+                properties: ["hot", "heavy"],
+                rasa: "sweet",
+                description: "Heating, heavy, increases Kapha",
+                category: "fruits"
+            },
+            {
+                id: 8,
+                name: "Ginger",
+                calories: 80,
+                properties: ["hot", "light"],
+                rasa: "pungent",
+                description: "Heating, light, digestive",
+                category: "spices"
+            },
+            {
+                id: 9,
+                name: "Turmeric",
+                calories: 20,
+                properties: ["hot", "light"],
+                rasa: "bitter",
+                description: "Heating, light, anti-inflammatory",
+                category: "spices"
+            },
+            {
+                id: 10,
+                name: "Coconut",
+                calories: 354,
+                properties: ["cold", "heavy"],
+                rasa: "sweet",
+                description: "Cooling, heavy, nourishing",
+                category: "fruits"
+            },
+            {
+                id: 11,
+                name: "Banana",
+                calories: 89,
+                properties: ["cold", "heavy"],
+                rasa: "sweet",
+                description: "Cooling, heavy, increases Kapha",
+                category: "fruits"
+            },
+            {
+                id: 12,
+                name: "Lemon",
+                calories: 29,
+                properties: ["cold", "light"],
+                rasa: "sour",
+                description: "Cooling, light, good for Pitta",
+                category: "fruits"
+            }
+        ];
+
+        let selectedFoods = [];
+        let filteredFoods = foodDatabase;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFoodGrid();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', filterFoods);
+            document.getElementById('propertyFilter').addEventListener('change', filterFoods);
+            document.getElementById('rasaFilter').addEventListener('change', filterFoods);
+            
+            // Selected foods actions
+            document.getElementById('clearSelected').addEventListener('click', clearSelected);
+            document.getElementById('goToDietChart').addEventListener('click', goToDietChart);
+        }
+
+        function filterFoods() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const propertyFilter = document.getElementById('propertyFilter').value;
+            const rasaFilter = document.getElementById('rasaFilter').value;
+
+            filteredFoods = foodDatabase.filter(food => {
+                const matchesSearch = food.name.toLowerCase().includes(searchTerm);
+                const matchesProperty = !propertyFilter || food.properties.includes(propertyFilter);
+                const matchesRasa = !rasaFilter || food.rasa === rasaFilter;
+                
+                return matchesSearch && matchesProperty && matchesRasa;
+            });
+
+            renderFoodGrid();
+        }
+
+        function renderFoodGrid() {
+            const grid = document.getElementById('foodGrid');
+            grid.innerHTML = '';
+
+            filteredFoods.forEach(food => {
+                const isSelected = selectedFoods.some(selected => selected.id === food.id);
+                const card = createFoodCard(food, isSelected);
+                grid.appendChild(card);
+            });
+        }
+
+        function createFoodCard(food, isSelected) {
+            const card = document.createElement('div');
+            card.className = `bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition duration-300 border-2 ${isSelected ? 'border-green-500 bg-green-50' : 'border-gray-200'}`;
+            
+            const propertiesIcons = {
+                hot: '🔥',
+                cold: '❄️',
+                light: '🍃',
+                heavy: '🍲'
+            };
+
+            const rasaIcons = {
+                sweet: '🍯',
+                sour: '🍋',
+                salty: '🧂',
+                bitter: '🌿',
+                pungent: '🌶️',
+                astringent: '🍃'
+            };
+
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-xl font-semibold text-gray-900">${food.name}</h3>
+                    <span class="text-sm text-gray-500">${food.calories} kcal</span>
+                </div>
+                
+                <p class="text-gray-600 mb-4">${food.description}</p>
+                
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-medium text-gray-700">Properties:</span>
+                        <div class="flex gap-1">
+                            ${food.properties.map(prop => `<span class="text-lg">${propertiesIcons[prop]}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-medium text-gray-700">Rasa:</span>
+                        <span class="text-lg">${rasaIcons[food.rasa]}</span>
+                        <span class="text-sm text-gray-600 capitalize">${food.rasa}</span>
+                    </div>
+                </div>
+                
+                <button onclick="toggleFoodSelection(${food.id})" 
+                        class="w-full ${isSelected ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'} text-white px-4 py-2 rounded-lg font-medium transition duration-300">
+                    ${isSelected ? 'Remove from Diet' : 'Add to Diet Chart'}
+                </button>
+            `;
+
+            return card;
+        }
+
+        function toggleFoodSelection(foodId) {
+            const food = foodDatabase.find(f => f.id === foodId);
+            const existingIndex = selectedFoods.findIndex(f => f.id === foodId);
+            
+            if (existingIndex > -1) {
+                selectedFoods.splice(existingIndex, 1);
+            } else {
+                selectedFoods.push(food);
+            }
+            
+            updateSelectedFoodsDisplay();
+            renderFoodGrid();
+        }
+
+        function updateSelectedFoodsDisplay() {
+            const selectedDiv = document.getElementById('selectedFoods');
+            const selectedList = document.getElementById('selectedList');
+            
+            if (selectedFoods.length > 0) {
+                selectedDiv.classList.remove('hidden');
+                selectedList.innerHTML = selectedFoods.map(food => `
+                    <div class="flex justify-between items-center bg-white p-3 rounded-lg">
+                        <span class="font-medium">${food.name}</span>
+                        <span class="text-sm text-gray-500">${food.calories} kcal</span>
+                    </div>
+                `).join('');
+            } else {
+                selectedDiv.classList.add('hidden');
+            }
+        }
+
+        function clearSelected() {
+            selectedFoods = [];
+            updateSelectedFoodsDisplay();
+            renderFoodGrid();
+        }
+
+        function goToDietChart() {
+            // Save selected foods to localStorage
+            localStorage.setItem('selectedFoods', JSON.stringify(selectedFoods));
+            // Redirect to diet chart page
+            window.location.href = 'diet.html';
+        }
+
+        // Make functions globally available
+        window.toggleFoodSelection = toggleFoodSelection;
+    </script>
+</body>
+</html>

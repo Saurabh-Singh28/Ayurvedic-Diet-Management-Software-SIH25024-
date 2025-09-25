@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Management - Ayurvedic Diet Software</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #fef3c7 100%);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html" class="text-2xl font-bold text-green-600">🍃 Ayurvedic Diet</a>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-green-600">Home</a>
+                    <a href="patient.html" class="text-green-600 font-medium">Patient</a>
+                    <a href="foods.html" class="text-gray-600 hover:text-green-600">Foods</a>
+                    <a href="diet.html" class="text-gray-600 hover:text-green-600">Diet Chart</a>
+                    <a href="recipes.html" class="text-gray-600 hover:text-green-600">Recipes</a>
+                    <a href="reports.html" class="text-gray-600 hover:text-green-600">Reports</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-8 text-center">👤 Patient Profile Management</h1>
+            
+            <form id="patientForm" class="space-y-6">
+                <!-- Basic Information -->
+                <div class="bg-green-50 rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-green-800 mb-4">Basic Information</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                            <input type="text" id="name" name="name" required 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Age *</label>
+                            <input type="number" id="age" name="age" required min="1" max="120"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Gender *</label>
+                            <select id="gender" name="gender" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Weight (kg)</label>
+                            <input type="number" id="weight" name="weight" min="1" max="300"
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dietary Habits -->
+                <div class="bg-orange-50 rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-orange-800 mb-4">🍽️ Dietary Habits</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Diet Type *</label>
+                            <select id="dietType" name="dietType" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                <option value="">Select Diet Type</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="non-vegetarian">Non-Vegetarian</option>
+                                <option value="vegan">Vegan</option>
+                                <option value="lacto-vegetarian">Lacto-Vegetarian</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Meal Frequency *</label>
+                            <select id="mealFrequency" name="mealFrequency" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                <option value="">Select Frequency</option>
+                                <option value="2">2 meals per day</option>
+                                <option value="3">3 meals per day</option>
+                                <option value="4">4 meals per day</option>
+                                <option value="5">5+ meals per day</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Health & Lifestyle -->
+                <div class="bg-blue-50 rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-blue-800 mb-4">🏥 Health & Lifestyle</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Bowel Movements *</label>
+                            <select id="bowelMovements" name="bowelMovements" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select Frequency</option>
+                                <option value="daily">Daily</option>
+                                <option value="twice-daily">Twice Daily</option>
+                                <option value="irregular">Irregular</option>
+                                <option value="constipated">Constipated</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Water Intake (liters/day) *</label>
+                            <select id="waterIntake" name="waterIntake" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="">Select Amount</option>
+                                <option value="1-2">1-2 liters</option>
+                                <option value="2-3">2-3 liters</option>
+                                <option value="3-4">3-4 liters</option>
+                                <option value="4+">4+ liters</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Health Conditions</label>
+                            <textarea id="healthConditions" name="healthConditions" rows="3"
+                                      placeholder="List any existing health conditions, allergies, or dietary restrictions..."
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ayurvedic Assessment -->
+                <div class="bg-purple-50 rounded-lg p-6">
+                    <h2 class="text-xl font-semibold text-purple-800 mb-4">🌿 Ayurvedic Assessment</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Body Type (Prakriti)</label>
+                            <select id="prakriti" name="prakriti"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                <option value="">Select Body Type</option>
+                                <option value="vata">Vata (Air + Ether)</option>
+                                <option value="pitta">Pitta (Fire + Water)</option>
+                                <option value="kapha">Kapha (Water + Earth)</option>
+                                <option value="vata-pitta">Vata-Pitta</option>
+                                <option value="pitta-kapha">Pitta-Kapha</option>
+                                <option value="vata-kapha">Vata-Kapha</option>
+                                <option value="tridosha">Tridosha (Balanced)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Current Imbalance (Vikriti)</label>
+                            <select id="vikriti" name="vikriti"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                <option value="">Select Imbalance</option>
+                                <option value="none">No Imbalance</option>
+                                <option value="vata">Vata Imbalance</option>
+                                <option value="pitta">Pitta Imbalance</option>
+                                <option value="kapha">Kapha Imbalance</option>
+                                <option value="multiple">Multiple Imbalances</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="submit" 
+                            class="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300 shadow-lg">
+                        <i class="fas fa-save mr-2"></i>Save Patient Profile
+                    </button>
+                </div>
+            </form>
+
+            <!-- Success Message -->
+            <div id="successMessage" class="hidden mt-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                <i class="fas fa-check-circle mr-2"></i>
+                Patient profile saved successfully! You can now proceed to create a diet chart.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('patientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const patientData = {};
+            
+            for (let [key, value] of formData.entries()) {
+                patientData[key] = value;
+            }
+            
+            // Add timestamp
+            patientData.createdAt = new Date().toISOString();
+            patientData.id = Date.now().toString();
+            
+            // Save to localStorage
+            let patients = JSON.parse(localStorage.getItem('patients') || '[]');
+            patients.push(patientData);
+            localStorage.setItem('patients', JSON.stringify(patients));
+            
+            // Show success message
+            document.getElementById('successMessage').classList.remove('hidden');
+            
+            // Reset form
+            this.reset();
+            
+            // Scroll to success message
+            document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

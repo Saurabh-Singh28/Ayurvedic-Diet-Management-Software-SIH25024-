@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayurvedic Diet Management Software</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #fef3c7 100%);
+        }
+        .ayurveda-green {
+            background-color: #10b981;
+        }
+        .ayurveda-beige {
+            background-color: #f5f5dc;
+        }
+        .ayurveda-orange {
+            background-color: #f97316;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-green-600">🍃 Ayurvedic Diet</h1>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-green-600 font-medium">Home</a>
+                    <a href="patient.html" class="text-gray-600 hover:text-green-600">Patient</a>
+                    <a href="foods.html" class="text-gray-600 hover:text-green-600">Foods</a>
+                    <a href="diet.html" class="text-gray-600 hover:text-green-600">Diet Chart</a>
+                    <a href="recipes.html" class="text-gray-600 hover:text-green-600">Recipes</a>
+                    <a href="reports.html" class="text-gray-600 hover:text-green-600">Reports</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button class="text-gray-600 hover:text-green-600">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                Ayurvedic Diet Management Software
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8">
+                Modern Nutrition Meets Ayurvedic Principles
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="patient.html" class="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition duration-300 shadow-lg">
+                    Start Patient Profile
+                </a>
+                <a href="foods.html" class="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition duration-300 shadow-lg">
+                    Explore Features
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">About Our System</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold text-green-600 mb-4">🌿 Ayurvedic Integration</h3>
+                    <p class="text-gray-600 mb-4">
+                        Our system seamlessly integrates modern nutritional science with traditional Ayurvedic principles, 
+                        considering food properties like Hot/Cold (Virya), taste (Rasa), and digestive qualities.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">🔥 Hot</span>
+                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">❄️ Cold</span>
+                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">🍃 Light</span>
+                        <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">🍲 Heavy</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-orange-600 mb-4">📊 Smart Analytics</h3>
+                    <p class="text-gray-600 mb-4">
+                        Generate comprehensive diet charts, track nutritional intake, and create personalized meal plans 
+                        based on individual constitution (Prakriti) and health conditions.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">🍯 Sweet Rasa</span>
+                        <span class="bg-pink-100 text-pink-800 px-3 py-1 rounded-full text-sm">🌶️ Spicy Rasa</span>
+                        <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">🍋 Sour Rasa</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Key Features</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition duration-300">
+                <div class="text-4xl mb-4">👤</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Patient Management</h3>
+                <p class="text-gray-600">Create comprehensive patient profiles with dietary preferences and health conditions.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition duration-300">
+                <div class="text-4xl mb-4">🍽️</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Food Database</h3>
+                <p class="text-gray-600">Extensive database of Indian foods with Ayurvedic properties and nutritional values.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition duration-300">
+                <div class="text-4xl mb-4">📋</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Diet Charts</h3>
+                <p class="text-gray-600">Generate personalized daily diet charts based on Ayurvedic principles.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition duration-300">
+                <div class="text-4xl mb-4">👨‍🍳</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Recipe Builder</h3>
+                <p class="text-gray-600">Create and analyze recipes with automatic nutritional calculations.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition duration-300">
+                <div class="text-4xl mb-4">📊</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Reports</h3>
+                <p class="text-gray-600">Generate comprehensive reports and export to PDF format.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition duration-300">
+                <div class="text-4xl mb-4">📱</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-3">Mobile Ready</h3>
+                <p class="text-gray-600">Fully responsive design optimized for desktop and mobile devices.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-lg">© 2025 Ayurvedic Diet System | Smart India Hackathon</p>
+            <p class="text-sm text-gray-400 mt-2">Modern Nutrition Meets Ancient Wisdom</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.querySelector('.md\\:hidden button');
+            // Add mobile menu functionality if needed
+        });
+    </script>
+</body>
+</html>
